@@ -11,10 +11,9 @@ router.get("/thumbnail/:image_id", async (req, res) => {
   try {
     const originalImage = await cloudinary.api.resource(image_id);
 
-    const { derived, format, height, width, secure_url, bytes } = originalImage;
+    const { format, height, width, secure_url, bytes } = originalImage;
 
     const data = {
-      // ...originalImage,
       original: {
         bytes,
         format,
@@ -22,10 +21,23 @@ router.get("/thumbnail/:image_id", async (req, res) => {
         width,
         secure_url,
       },
-      thumbnails: derived,
-      // thumb_400x260: resizeImageFromURL(originalImage.secure_url, 400, 260),
-      // thumb_160x120: resizeImageFromURL(originalImage.secure_url, 160, 120),
-      // thumb_120x120: resizeImageFromURL(originalImage.secure_url, 120, 120),
+      thumbnails: [
+        {
+          secure_url: resizeImageFromURL(originalImage.secure_url, 400, 260),
+          width: 400,
+          height: 260,
+        },
+        {
+          thumb_160x120: resizeImageFromURL(originalImage.secure_url, 160, 120),
+          width: 160,
+          height: 120,
+        },
+        {
+          thumb_120x120: resizeImageFromURL(originalImage.secure_url, 120, 120),
+          width: 120,
+          height: 120,
+        },
+      ],
     };
 
     res.json(data);
