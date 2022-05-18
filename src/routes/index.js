@@ -5,7 +5,7 @@ const fs = require("fs-extra");
 const resizeImageFromURL = require("../helpers/resizeImageFromURL");
 const router = express.Router();
 
-router.get("/thumbnail/:image_id", async (req, res) => {
+router.get("thumbnail/:image_id", async (req, res) => {
   const { image_id } = req.params;
 
   try {
@@ -34,7 +34,7 @@ router.get("/thumbnail/:image_id", async (req, res) => {
   }
 });
 
-router.get("/thumbnail/delete/:image_id", async (req, res) => {
+router.get("thumbnail/delete/:image_id", async (req, res) => {
   const { image_id } = req.params;
 
   try {
@@ -46,7 +46,7 @@ router.get("/thumbnail/delete/:image_id", async (req, res) => {
   }
 });
 
-router.post("/uploadImage", uploadFile(), async (req, res) => {
+router.post("uploadImage", uploadFile(), async (req, res) => {
   try {
     const result = await cloudinary.uploader.upload(req.file.path);
     await fs.unlink(req.file.path);
