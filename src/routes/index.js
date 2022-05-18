@@ -5,7 +5,7 @@ const fs = require("fs-extra");
 const resizeImageFromURL = require("../helpers/resizeImageFromURL");
 const router = express.Router();
 
-router.get("thumbnail/:image_id", async (req, res) => {
+router.get("/thumbnail/:image_id", async (req, res) => {
   const { image_id } = req.params;
 
   try {
