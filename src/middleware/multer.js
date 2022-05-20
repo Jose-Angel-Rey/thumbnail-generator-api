@@ -2,7 +2,7 @@ const multer = require("multer");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 
-function uploadFile() {
+function uploadImage() {
   const storage = multer.diskStorage({
     destination: path.join(__dirname, "../../public/uploads"),
     filename: function (req, file, cb) {
@@ -20,15 +20,15 @@ function uploadFile() {
       const extname = fileTypes.test(
         path.extname(file.originalname).toLowerCase()
       );
-      if (mimetype && extname) return cb(null, true); 
+      if (mimetype && extname) return cb(null, true);
       cb(
         "Error: File upload only supports the following file types - " +
           fileTypes
       );
     },
-  }).single("file");
+  }).single("image");
 
   return upload;
 }
 
-module.exports = uploadFile;
+module.exports = uploadImage;
