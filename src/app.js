@@ -5,14 +5,15 @@ const cors = require("cors");
 const routes = require("./routes");
 
 const server = express();
-
 const port = process.env.PORT || 4000;
 
 server.use(cors());
-server.use(express.json());
-server.use(express.urlencoded({ limit: "10mb", extended: true }));
+server.use(express.json({ limit: "5mb" }));
+server.use(express.urlencoded({ limit: "5mb", extended: true }));
 server.use(express.static("../public"));
 server.use(morgan("dev"));
 server.use(routes);
 
 server.listen(port, () => console.log(`Server is running on PORT ${port}`));
+
+// https://thumbnail-generator-backend.herokuapp.com/
