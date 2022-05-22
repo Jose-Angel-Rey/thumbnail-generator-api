@@ -1,0 +1,138 @@
+openapi: 3.0.0
+tags:
+  name: Thumbnail
+  description: related endpoints.
+paths:
+  /thumbnail/uploadImage:
+    post:
+      summary: Upload an image to Cloudinary.
+      description: Upload an image to Cloudinary and return the image URL.
+      tags:
+        - Thumbnail
+      parameters:
+        - name: image
+          description: Image to upload.
+          in: multipart/form-data
+          required: true
+          type: file
+          schema:
+            type: string
+            format: binary
+            example: https://res.cloudinary.com/dev-demos/image/upload/v1652813957/samples/ecommerce/analog-classic.jpeg
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Image uploaded successfully
+                  data:
+                    type: object
+                    properties:
+                      public_id:
+                        type: string
+                        example: v1652813957
+                      secure_url:
+                        type: string
+                        format: url
+                        example: https://res.cloudinary.com/dev-demos/image/upload/v1652813957/samples/ecommerce/analog-classic.jpeg
+        400:
+          description: Bad request
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+  /thumbnail/{image_id}:
+    get:
+      summary: Get thumbnails for an image.
+      description: Get thumbnails for an image.
+      tags:
+        - Thumbnail
+      parameters:
+        - name: image_id
+          description: Image ID
+          in: path
+          required: true
+          schema:
+            type: string
+            example: enhiell4p4kozlpu0xqg
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  original:
+                    type: object
+                    properties:
+                      bytes:
+                        type: integer
+                        example: 5242880
+                      format:
+                        type: string
+                        example: jpeg
+                      width:
+                        type: integer
+                        example: 1920
+                      height:
+                        type: integer
+                        example: 1080
+                      secure_url:
+                        type: string
+                        example: https://res.cloudinary.com/dev-demos/image/upload/v1653134416/enhiell4p4kozlpu0xqg.jpg
+                  thumbnails:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        width:
+                          type: integer
+                          example: 400
+                        height:
+                          type: integer
+                          example: 300
+                        secure_url:
+                          type: string
+                          example: https://res.cloudinary.com/dev-demos/image/upload/c_thumb,h_300,q_100,w_400/enhiell4p4kozlpu0xqg
+        404:
+          description: Not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Resource not found - enhiell4p4kozlpu0xqg
+                  http_code:
+                    type: integer
+                    example: 404
+
+    delete:
+      summary: Delete image from Cloudinary.
+      description: Delete an image from Cloudinary.
+      tags:
+        - Thumbnail
+      parameters:
+        - name: image_id
+          description: Image ID.
+          in: path
+          required: true
+          schema:
+            type: string
+            example: enhiell4p4kozlpu0xqg
+      responses:
+        200:
+          description: Success
+        400:
+          description: Bad request
+        404:
+          description: Not found
+        500:
+          description: Internal server error
