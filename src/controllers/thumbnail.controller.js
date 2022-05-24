@@ -1,27 +1,30 @@
 const express = require("express");
-const fs = require("fs").promises;
-const uploadImage = require("../middleware/multer");
 const cloudinary = require("../utils/cloudinary");
 const { generateThumbnails } = require("../helpers/generateThumbnails");
 
 const thumbnail = express.Router();
 
-thumbnail.post("/uploadImage", uploadImage(), async (req, res) => {
+thumbnail.post("/uploadImage", async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(req.file.path);
+    const fileString = req.body.base64;
 
-    await fs.unlink(req.file.path);
+    const uploadResponse = await cloudinary.uploader.upload(fileString, {
+      allowed_formats: ["jpeg", "png"],
+      format: "jpeg",
+    });
+
+    const { public_id, secure_url } = uploadResponse;
 
     res.status(200).json({
-      message: "Image uploaded successfully",
       data: {
-        public_id: result.public_id,
-        secure_url: result.secure_url,
+        message: "Image uploaded successfully!!",
+        public_id,
+        secure_url,
       },
     });
   } catch (err) {
-    const { error } = err;
-    res.status(error?.http_code || 500).json(error || err);
+    console.error(err);
+    res.status(500).json(err);
   }
 });
 
@@ -30,21 +33,25 @@ thumbnail.get("/:image_id", async (req, res) => {
 
   try {
     const originalImage = await cloudinary.api.resource(image_id);
-    const { format, height, width, secure_url, bytes } = originalImage;
+
+    const { format, height, width, secure_url, public_id, bytes } =
+      originalImage;
+
     const data = {
       original: {
         bytes,
         format,
         height,
         width,
+        public_id,
         secure_url,
       },
       thumbnails: generateThumbnails(image_id),
     };
     res.status(200).json(data);
   } catch (err) {
-    const { error } = err;
-    res.status(error?.http_code || 500).json(error || err);
+    console.error(err);
+    res.status(500).json(err);
   }
 });
 
@@ -53,12 +60,10 @@ thumbnail.delete("/:image_id", async (req, res) => {
 
   try {
     const response = await cloudinary.uploader.destroy(image_id);
-    res
-      .status(200)
-      .json({ ...response, message: "Image deleted successfully!" });
+    res.status(200).json(response);
   } catch (err) {
-    const { error } = err;
-    res.status(error?.http_code || 500).json(error || err);
+    console.error(err);
+    res.status(500).json(err);
   }
 });
 
