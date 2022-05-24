@@ -10,10 +10,10 @@ const swaggerOptions = require("./utils/swagger");
 const server = express();
 const port = process.env.PORT || 4000;
 
+// Middlewares
 server.use(cors());
 server.use(express.json({ limit: "5mb" }));
 server.use(express.urlencoded({ limit: "5mb", extended: true }));
-server.use(express.static("../public"));
 server.use(morgan("dev"));
 server.use(routes);
 
@@ -29,4 +29,5 @@ server.use(
 
 server.listen(port, () => console.log(`Server is running on PORT ${port}`));
 
+// This API is deployed on Heroku:
 // https://thumbnail-generator-backend.herokuapp.com/
