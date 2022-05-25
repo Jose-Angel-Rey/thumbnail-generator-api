@@ -30,4 +30,4 @@ server.use(
 server.listen(port, () => console.log(`Server is running on PORT ${port}`));
 
 // This API is deployed on Heroku:
-// https://thumbnail-generator-backend.herokuapp.com/
+// https://thumbnail-generator-backend.herokuapp.com
