@@ -38,15 +38,12 @@ In the project directory, you can run:
 
 ### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:4000](http://localhost:4000) to make requests to server.
-
-### `yarn dev`
-
 Run the application locally on the port defined in the environment variables or on port 4000.
 It uses nodemon to restart the server every time there is a change in the application.
 Open [http://localhost:4000](http://localhost:4000) to make requests to server.
 
-### `yarn test`
+### `yarn dev`
 
-Launches the test runner in the interactive watch mode.
+Run the application in development mode via a Docker image.
+Open [http://localhost:4000](http://localhost:4000) to make requests to server.
+The page will reload if you make edits. You will also see any lint errors in the console.
