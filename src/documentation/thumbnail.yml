@@ -10,15 +10,14 @@ paths:
       tags:
         - Thumbnail
       parameters:
-        - name: image
-          description: Image to upload.
-          in: multipart/form-data
+        - name: base64
+          description: Image to upload as a base64 encoded string.
+          in: application/json
           required: true
-          type: file
+          type: string
           schema:
             type: string
-            format: binary
-            example: https://res.cloudinary.com/dev-demos/image/upload/v1652813957/samples/ecommerce/analog-classic.jpeg
+            example: base64 encoded image
       responses:
         200:
           description: Success
@@ -27,12 +26,12 @@ paths:
               schema:
                 type: object
                 properties:
-                  message: 
-                    type: string
-                    example: Image uploaded successfully
                   data:
                     type: object
                     properties:
+                      message: 
+                        type: string
+                        example: Image uploaded successfully
                       public_id:
                         type: string
                         example: v1652813957
@@ -40,16 +39,10 @@ paths:
                         type: string
                         format: url
                         example: https://res.cloudinary.com/dev-demos/image/upload/v1652813957/samples/ecommerce/analog-classic.jpeg
-        400:
-          description: Bad request
-        404:
-          description: Not found
-        500:
-          description: Internal server error
   /thumbnail/{image_id}:
     get:
-      summary: Get thumbnails for an image.
-      description: Get thumbnails for an image.
+      summary: Thumbnails for an image id.
+      description: Get thumbnails for an image id.
       tags:
         - Thumbnail
       parameters:
@@ -83,6 +76,9 @@ paths:
                       height:
                         type: integer
                         example: 1080
+                      public_id:
+                        type: string
+                        example: enhiell4p4kozlpu0xqg
                       secure_url:
                         type: string
                         example: https://res.cloudinary.com/dev-demos/image/upload/v1653134416/enhiell4p4kozlpu0xqg.jpg
@@ -130,9 +126,11 @@ paths:
       responses:
         200:
           description: Success
-        400:
-          description: Bad request
-        404:
-          description: Not found
-        500:
-          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: ok

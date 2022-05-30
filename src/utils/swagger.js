@@ -17,14 +17,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "https://thumbnail-generator-backend.herokuapp.com/api",
-        variables: {
-          username: {
-            default: "demo",
-            description:
-              "this value is assigned by the service provider, in this example `gigantic-server.com`",
-          },
-        },
+        url: "https://thumbnail-generator-backend.herokuapp.com/api/",
+        description: "Production server",
       },
     ],
   },
